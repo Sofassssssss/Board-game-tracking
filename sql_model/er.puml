@@ -1,0 +1,73 @@
+@startuml
+hide circle
+
+entity Game {
+  * id: SERIAL [PK]
+  --
+  title: VARCHAR
+  description: TEXT
+  max_players: INT
+  is_one_winner: BOOL
+}
+
+entity Match {
+  * id: SERIAL [PK]
+  --
+  game_id: INT [FK -> Game.id]
+  group_id: INT [FK -> Group.id]
+  created_by_user_id: INT [FK -> User.id]
+  final_score: TEXT
+  date: DATE
+}
+
+entity Group {
+  * id: SERIAL [PK]
+  --
+  name: VARCHAR UNIQUE
+  description: TEXT
+}
+
+entity User {
+  * id: SERIAL [PK]
+  --
+  role_id: INT [FK -> Role.id]
+  username: VARCHAR UNIQUE
+  hashed_password: TEXT
+  email: TEXT
+}
+
+entity MatchPlayer{
+    * match_player_id: SERIAL [PK]
+    --
+    match_id: INT [FK -> Match.id]
+    player_id: INT [FK -> Player.id]
+}
+
+entity Player {
+  * id: SERIAL [PK]
+  --
+  group_id: INT [FK -> Group.id]
+  match_id: INT [FK -> Match.id]
+  user_id: INT [FK -> User.id] | NULL
+  name: TEXT
+  rating: INT
+}
+
+entity Role {
+  * id: SERIAL [PK]
+  --
+  name: VARCHAR UNIQUE
+}
+
+
+Match }o--|| Game
+Match }o--|| Group
+Match }o--|| User
+Match ||-o{ MatchPlayer
+Player }|---|| Group
+Player }|--o| User
+Player ||--|{ MatchPlayer
+User }|--|{ Role
+
+
+@enduml
