@@ -16,7 +16,6 @@ entity Match {
   game_id: INT [FK -> Game.id]
   group_id: INT [FK -> Group.id]
   created_by_user_id: INT [FK -> User.id]
-  final_score: TEXT
   date: DATE
 }
 
@@ -36,11 +35,20 @@ entity User {
   email: TEXT
 }
 
+entity UserGroup{
+    * user_group_id: SERIAL [PK]
+    --
+    user_id: INT [FK -> User.id]
+    group_id: INT [FK -> Group.id]
+    user_group_role_id: INT [FK -> GroupRole.id]
+}
+
 entity MatchPlayer{
     * match_player_id: SERIAL [PK]
     --
     match_id: INT [FK -> Match.id]
     player_id: INT [FK -> Player.id]
+    is_winner: BOOL
 }
 
 entity Player {
@@ -48,12 +56,17 @@ entity Player {
   --
   group_id: INT [FK -> Group.id]
   match_id: INT [FK -> Match.id]
-  user_id: INT [FK -> User.id] | NULL
   name: TEXT
   rating: INT
 }
 
 entity Role {
+  * id: SERIAL [PK]
+  --
+  name: VARCHAR UNIQUE
+}
+
+entity GroupRole {
   * id: SERIAL [PK]
   --
   name: VARCHAR UNIQUE
@@ -65,9 +78,11 @@ Match }o--|| Group
 Match }o--|| User
 Match ||-o{ MatchPlayer
 Player }|---|| Group
-Player }|--o| User
-Player ||--|{ MatchPlayer
+Player ||---|{ MatchPlayer
 User }|--|{ Role
+User ||--o{ UserGroup
+Group ||--|{ UserGroup
+UserGroup }|--|| GroupRole
 
 
 @enduml
