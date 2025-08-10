@@ -6,8 +6,30 @@ entity Game {
   --
   title: VARCHAR
   description: TEXT
+  is_team_game: BOOL
+  placement_policy: ENUM("forbidden", "required")
+  score_policy: ENUM("forbidden", "required", "optional")
+  score_higher_is_better: BOOL | NULL
+  rating_uses_score: BOOL
+  allow_draws: BOOL
+}
+
+entity PlayerRuleset {
+  * id: SERIAL [PK]
+  --
+  game_id: INT [FK -> Game.id]
+  min_players: INT
   max_players: INT
-  is_one_winner: BOOL
+}
+
+entity TeamRuleset {
+  * id: SERIAL [PK]
+  --
+  game_id: INT [FK -> Game.id]
+  min_teams: INT
+  max_teams: INT
+  min_players_per_team: INT
+  max_players_per_team: INT
 }
 
 entity Match {
@@ -56,7 +78,6 @@ entity Player {
   --
   group_id: INT [FK -> Group.id]
   name: TEXT
-  rating: INT
 }
 
 entity Role {
@@ -82,6 +103,8 @@ User }|--|{ Role
 User ||--o{ UserGroup
 Group ||--|{ UserGroup
 UserGroup }|--|| GroupRole
+PlayerRuleset |o--|{ Game
+TeamRuleset |o--|{ Game
 
 
 @enduml
