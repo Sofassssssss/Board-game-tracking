@@ -10,7 +10,7 @@ entity Game {
   placement_policy: ENUM("forbidden", "required")
   score_policy: ENUM("forbidden", "required", "optional")
   score_higher_is_better: BOOL | NULL
-  rating_uses_score: BOOL
+  rating_uses_score: BOOL | NULL
   allow_draws: BOOL
 }
 
@@ -70,7 +70,9 @@ entity MatchPlayer{
     --
     match_id: INT [FK -> Match.id]
     player_id: INT [FK -> Player.id]
-    is_winner: BOOL
+    outcome: TEXT
+    placement: INT | NULL
+    score: FLOAT | NULL
 }
 
 entity Player {
