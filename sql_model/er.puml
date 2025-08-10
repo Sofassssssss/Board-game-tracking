@@ -55,7 +55,6 @@ entity Player {
   * id: SERIAL [PK]
   --
   group_id: INT [FK -> Group.id]
-  match_id: INT [FK -> Match.id]
   name: TEXT
   rating: INT
 }
