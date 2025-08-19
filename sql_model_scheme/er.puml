@@ -80,6 +80,7 @@ entity Player {
   --
   group_id: INT [FK -> Group.id]
   name: TEXT
+  surname: TEXT
 }
 
 entity Role {
