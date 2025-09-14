@@ -9,5 +9,6 @@ type Match struct {
 	GroupID         uint
 	Group           Group `gorm:"foreignKey:GroupID"`
 	CreatedByUserID uint
-	CreatedByUser   User `gorm:"foreignKey:CreatedByUserID"`
+	CreatedByUser   User          `gorm:"foreignKey:CreatedByUserID"`
+	Players         []MatchPlayer `gorm:"foreignKey:MatchID"`
 }

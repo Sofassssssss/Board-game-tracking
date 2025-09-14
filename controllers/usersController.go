@@ -14,13 +14,15 @@ import (
 	"time"
 )
 
+const TokenMaxAge = 30 * 24 * time.Hour
+
 func Signup(c *gin.Context) {
 	// Get the email/password off req body
 	var body struct {
-		RoleID   uint
-		Username string
-		Email    string
-		Password string
+		RoleID   uint   `json:"role_id"`
+		Username string `json:"username"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 
 	if c.Bind(&body) != nil {
@@ -31,7 +33,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	//TODO: add password validation
+	//TODO: add password, email and username validation
 
 	//Hash the password
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
@@ -133,7 +135,7 @@ func Login(c *gin.Context) {
 	c.SetCookie(
 		"Authorization",
 		tokenString,
-		3600*24*30,
+		int(TokenMaxAge.Seconds()),
 		"",
 		"",
 		false,
