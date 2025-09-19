@@ -1,10 +1,10 @@
-package controllers
+package handlers
 
 import (
 	"errors"
 	"fmt"
-	"github.com/Sofassssssss/Board-game-tracking/initializers"
-	"github.com/Sofassssssss/Board-game-tracking/models"
+	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
+	"github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -54,7 +54,7 @@ func Signup(c *gin.Context) {
 		Email:          body.Email,
 	}
 
-	result := initializers.DB.Create(&user)
+	result := gormrepo.DB.Create(&user)
 
 	if result.Error != nil {
 		var pgErr *pgconn.PgError
@@ -95,7 +95,7 @@ func Login(c *gin.Context) {
 
 	// Look up requested user
 	var user models.User
-	initializers.DB.First(&user, "email = ?", body.Email)
+	gormrepo.DB.First(&user, "email = ?", body.Email)
 
 	if user.ID == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{

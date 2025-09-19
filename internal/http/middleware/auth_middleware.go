@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"fmt"
-	"github.com/Sofassssssss/Board-game-tracking/initializers"
-	"github.com/Sofassssssss/Board-game-tracking/models"
+	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
+	"github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
@@ -35,7 +35,7 @@ func RequireAuth(c *gin.Context) {
 
 		// Find the user with token sub
 		var user models.User
-		initializers.DB.Preload("Role").First(&user, claims["sub"])
+		gormrepo.DB.Preload("Role").First(&user, claims["sub"])
 
 		if user.ID == 0 {
 			c.AbortWithStatus(http.StatusUnauthorized)

@@ -1,7 +1,7 @@
-package initializers
+package gormrepo
 
 import (
-	"github.com/Sofassssssss/Board-game-tracking/models"
+	"github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm/models"
 	"gorm.io/gorm"
 )
 
