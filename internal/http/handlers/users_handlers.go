@@ -3,9 +3,11 @@ package handlers
 import (
 	"errors"
 	"fmt"
+	"github.com/Sofassssssss/Board-game-tracking/internal/http/validators"
 	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
 	"github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm/models"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"golang.org/x/crypto/bcrypt"
@@ -16,13 +18,16 @@ import (
 
 const TokenMaxAge = 30 * 24 * time.Hour
 
+var validate = validator.New()
+
 func Signup(c *gin.Context) {
+	validate.RegisterValidation("password", validators.PasswordValidator)
 	// Get the email/password off req body
 	var body struct {
 		RoleID   uint   `json:"role_id"`
-		Username string `json:"username"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
+		Username string `json:"username" validate:"required,ascii,min=3,max=50,excludesall= "`
+		Email    string `json:"email" validate:"email"`
+		Password string `json:"password" validate:"required,min=8,password"`
 	}
 
 	if c.Bind(&body) != nil {
@@ -33,7 +38,33 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	//TODO: add password, email and username validation
+	if err := validate.Struct(body); err != nil {
+		var validationErrors validator.ValidationErrors
+		errors.As(err, &validationErrors)
+		errorMessages := make(map[string]string)
+
+		for _, fieldError := range validationErrors {
+			switch fieldError.Tag() {
+			case "required":
+				errorMessages[fieldError.Field()] = "This field is required"
+			case "email":
+				errorMessages[fieldError.Field()] = "Invalid email format"
+			case "min":
+				errorMessages[fieldError.Field()] = fmt.Sprintf("Minimum length is %s", fieldError.Param())
+			case "password":
+				errorMessages[fieldError.Field()] = "Password must contain at least one uppercase letter, " +
+					"one lowercase letter and one number"
+			default:
+				errorMessages[fieldError.Field()] = fieldError.Tag()
+			}
+		}
+
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Validation failed",
+			"details": errorMessages,
+		})
+		return
+	}
 
 	//Hash the password
 	hash, err := bcrypt.GenerateFromPassword([]byte(body.Password), 10)
