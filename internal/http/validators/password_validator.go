@@ -1,19 +1,32 @@
 package validators
 
-import "github.com/go-playground/validator/v10"
+import (
+	"unicode"
+
+	"github.com/go-playground/validator/v10"
+)
 
 func PasswordValidator(fl validator.FieldLevel) bool {
 	password := fl.Field().String()
-	var hasUpper, hasDigit bool
+	var (
+		hasUpper   bool
+		hasLower   bool
+		hasDigit   bool
+		hasSpecial bool
+	)
 
 	for _, c := range password {
 		switch {
-		case 'A' <= c && c <= 'Z':
+		case unicode.IsUpper(c):
 			hasUpper = true
-		case '0' <= c && c <= '9':
+		case unicode.IsLower(c):
+			hasLower = true
+		case unicode.IsDigit(c):
 			hasDigit = true
+		case unicode.IsPunct(c):
+			hasSpecial = true
 		}
 	}
 
-	return hasUpper && hasDigit
+	return hasUpper && hasLower && hasDigit && hasSpecial
 }

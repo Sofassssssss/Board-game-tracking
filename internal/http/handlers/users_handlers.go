@@ -53,7 +53,7 @@ func Signup(c *gin.Context) {
 				errorMessages[fieldError.Field()] = fmt.Sprintf("Minimum length is %s", fieldError.Param())
 			case "password":
 				errorMessages[fieldError.Field()] = "Password must contain at least one uppercase letter, " +
-					"one lowercase letter and one number"
+					"one lowercase letter, one special symbol and one number"
 			default:
 				errorMessages[fieldError.Field()] = fieldError.Tag()
 			}
