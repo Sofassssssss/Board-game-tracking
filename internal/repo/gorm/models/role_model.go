@@ -1,7 +1,7 @@
 package models
 
 type Role struct {
-	ID    int `gorm:"primaryKey;autoIncrement"`
+	ID    uint `gorm:"primaryKey;autoIncrement"`
 	Name  string
 	Users []User
 }
