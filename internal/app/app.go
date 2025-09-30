@@ -4,7 +4,6 @@ import (
 	"github.com/Sofassssssss/Board-game-tracking/internal/config"
 	"github.com/Sofassssssss/Board-game-tracking/internal/http/router"
 	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
-	"github.com/Sofassssssss/Board-game-tracking/migrations"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -21,7 +20,6 @@ func NewApp() *App {
 	gormrepo.ConnectToDb()
 
 	// migrations + seed
-	migrations.SyncDatabase()
 	gormrepo.SeedRoles(gormrepo.DB)
 
 	// init router
