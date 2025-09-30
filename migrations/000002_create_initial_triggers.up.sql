@@ -1,5 +1,5 @@
 CREATE FUNCTION trg_team_rulesets_check() RETURNS trigger AS $$
-DECLARE exists_other INTEGER;
+DECLARE exists_other INT;
     DECLARE v_is_team_game BOOLEAN;
 BEGIN
     -- Check if a player_ruleset already exists for the same game
@@ -28,7 +28,7 @@ CREATE TRIGGER team_rulesets_before_insupd
     FOR EACH ROW EXECUTE FUNCTION trg_team_rulesets_check();
 
 CREATE FUNCTION trg_player_rulesets_check() RETURNS trigger AS $$
-DECLARE exists_other INTEGER;
+DECLARE exists_other INT;
     DECLARE v_is_team_game BOOLEAN;
 BEGIN
 

@@ -33,19 +33,19 @@ CREATE TABLE games (
 
 CREATE TABLE team_rulesets (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    game_id INTEGER NOT NULL UNIQUE,
-    min_teams INTEGER NOT NULL,
-    max_teams INTEGER NOT NULL,
-    min_players_per_team INTEGER NOT NULL,
-    max_players_per_team INTEGER NOT NULL,
+    game_id INT NOT NULL UNIQUE,
+    min_teams INT NOT NULL,
+    max_teams INT NOT NULL,
+    min_players_per_team INT NOT NULL,
+    max_players_per_team INT NOT NULL,
     FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
 );
 
 CREATE TABLE player_rulesets (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    game_id INTEGER NOT NULL UNIQUE,
-    min_players INTEGER NOT NULL,
-    max_players INTEGER NOT NULL,
+    game_id INT NOT NULL UNIQUE,
+    min_players INT NOT NULL,
+    max_players INT NOT NULL,
     FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
 );
 
@@ -53,7 +53,7 @@ CREATE TABLE players (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name TEXT NOT NULL,
     surname TEXT,
-    group_id INTEGER NOT NULL,
+    group_id INT NOT NULL,
     FOREIGN KEY (group_id) REFERENCES groups(id)
 );
 
@@ -64,15 +64,15 @@ CREATE TABLE users (
     username TEXT UNIQUE NOT NULL,
     hashed_password TEXT UNIQUE NOT NULL,
     email TEXT NOT NULL,
-    role_id INTEGER NOT NULL,
+    role_id INT NOT NULL,
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
 CREATE TABLE matches (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    game_id INTEGER NOT NULL,
-    group_id INTEGER NOT NULL,
-    created_by_user_id INTEGER NOT NULL,
+    game_id INT NOT NULL,
+    group_id INT NOT NULL,
+    created_by_user_id INT NOT NULL,
     date DATE NOT NULL,
     FOREIGN KEY (game_id) REFERENCES games(id),
     FOREIGN KEY (group_id) REFERENCES groups(id),
@@ -85,10 +85,10 @@ CREATE INDEX idx_matches_group_id ON matches (group_id);
 
 CREATE TABLE matches_players (
     match_player_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    match_id INTEGER NOT NULL,
-    player_id INTEGER NOT NULL,
+    match_id INT NOT NULL,
+    player_id INT NOT NULL,
     outcome match_outcome NOT NULL,
-    placement INTEGER,
+    placement INT,
     score NUMERIC,
 
     FOREIGN KEY (match_id) REFERENCES matches(id),
@@ -100,9 +100,9 @@ CREATE INDEX idx_matches_players_player_id ON matches_players (player_id);
 
 CREATE TABLE users_groups (
     user_group_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    group_id INTEGER NOT NULL,
-    user_group_role_id INTEGER NOT NULL,
+    user_id INT NOT NULL,
+    group_id INT NOT NULL,
+    user_group_role_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (group_id) REFERENCES groups(id),
     FOREIGN KEY (user_group_role_id) REFERENCES group_roles(id)
