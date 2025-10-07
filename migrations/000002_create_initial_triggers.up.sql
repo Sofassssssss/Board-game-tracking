@@ -1,15 +1,15 @@
-CREATE FUNCTION trg_team_rulesets_check() RETURNS trigger AS $$
+CREATE FUNCTION trg_team_ruleset_check() RETURNS trigger AS $$
 DECLARE exists_other INT;
     DECLARE v_is_team_game BOOLEAN;
 BEGIN
     -- Check if a player_ruleset already exists for the same game
-    SELECT COUNT(*) INTO exists_other FROM player_rulesets WHERE game_id = NEW.game_id;
+    SELECT COUNT(*) INTO exists_other FROM player_ruleset WHERE game_id = NEW.game_id;
     IF exists_other > 0 THEN
         RAISE EXCEPTION 'player_ruleset already exists for game %', NEW.game_id;
     END IF;
 
     -- Check if the game is marked as a team game
-    SELECT is_team_game INTO v_is_team_game FROM games WHERE id = NEW.game_id;
+    SELECT is_team_game INTO v_is_team_game FROM game WHERE id = NEW.game_id;
     IF NOT FOUND THEN
         RAISE EXCEPTION 'game % not found', NEW.game_id;
     END IF;
@@ -23,23 +23,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER team_rulesets_before_insupd
-    BEFORE INSERT OR UPDATE ON team_rulesets
-    FOR EACH ROW EXECUTE FUNCTION trg_team_rulesets_check();
+CREATE TRIGGER team_ruleset_before_insupd
+    BEFORE INSERT OR UPDATE ON team_ruleset
+    FOR EACH ROW EXECUTE FUNCTION trg_team_ruleset_check();
 
-CREATE FUNCTION trg_player_rulesets_check() RETURNS trigger AS $$
+CREATE FUNCTION trg_player_ruleset_check() RETURNS trigger AS $$
 DECLARE exists_other INT;
     DECLARE v_is_team_game BOOLEAN;
 BEGIN
 
     -- Check if a team_ruleset already exists for the same game
-    SELECT COUNT(*) INTO exists_other FROM team_rulesets WHERE game_id = NEW.game_id;
+    SELECT COUNT(*) INTO exists_other FROM team_ruleset WHERE game_id = NEW.game_id;
     IF exists_other > 0 THEN
         RAISE EXCEPTION 'team_ruleset already exists for game %', NEW.game_id;
     END IF;
 
     -- Check if the game is marked as a team game
-    SELECT is_team_game INTO v_is_team_game FROM games WHERE id = NEW.game_id;
+    SELECT is_team_game INTO v_is_team_game FROM game WHERE id = NEW.game_id;
     IF NOT FOUND THEN
         RAISE EXCEPTION 'game % not found', NEW.game_id;
     END IF;
@@ -53,11 +53,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER player_rulesets_before_insupd
-    BEFORE INSERT OR UPDATE ON player_rulesets
-    FOR EACH ROW EXECUTE FUNCTION trg_player_rulesets_check();
+CREATE TRIGGER player_ruleset_before_insupd
+    BEFORE INSERT OR UPDATE ON player_ruleset
+    FOR EACH ROW EXECUTE FUNCTION trg_player_ruleset_check();
 
-CREATE FUNCTION trg_player_match_results_check() RETURNS trigger AS $$
+CREATE FUNCTION trg_player_match_result_check() RETURNS trigger AS $$
 DECLARE v_allow_draws BOOLEAN;
     DECLARE v_score_policy game_score_policy;
     DECLARE v_placement_policy game_placement_policy;
@@ -73,8 +73,8 @@ BEGIN
 
     SELECT g.allow_draws, g.score_policy, g.placement_policy, m.game_id
     INTO v_allow_draws, v_score_policy, v_placement_policy, v_game_id
-    FROM matches m
-             JOIN games g ON m.game_id = g.id
+    FROM match m
+             JOIN game g ON m.game_id = g.id
     WHERE m.id = NEW.match_id;
 
     -- Outcome check
@@ -101,6 +101,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER matches_players_before_insupd
-    BEFORE INSERT OR UPDATE ON matches_players
-    FOR EACH ROW EXECUTE FUNCTION trg_player_match_results_check();
+CREATE TRIGGER match_players_before_insupd
+    BEFORE INSERT OR UPDATE ON match_player
+    FOR EACH ROW EXECUTE FUNCTION trg_player_match_result_check();
