@@ -1,4 +1,4 @@
-DROP TRIGGER IF EXISTS match_players_before_insupd ON match_player;
+DROP TRIGGER IF EXISTS match_player_before_insupd ON match_player;
 DROP FUNCTION IF EXISTS trg_player_match_result_check();
 
 DROP TRIGGER IF EXISTS player_ruleset_before_insupd ON player_ruleset;

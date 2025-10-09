@@ -101,6 +101,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER match_players_before_insupd
+CREATE TRIGGER match_player_before_insupd
     BEFORE INSERT OR UPDATE ON match_player
     FOR EACH ROW EXECUTE FUNCTION trg_player_match_result_check();

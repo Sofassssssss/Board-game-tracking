@@ -57,7 +57,7 @@ CREATE TABLE player (
     FOREIGN KEY (club_id) REFERENCES club(id)
 );
 
-CREATE INDEX idx_players_club_id ON player (club_id);
+CREATE INDEX idx_player_club_id ON player (club_id);
 
 CREATE TABLE account (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -79,7 +79,7 @@ CREATE TABLE match (
     FOREIGN KEY (created_by_account_id) REFERENCES account(id)
 );
 
-CREATE INDEX idx_matches_club_id ON match (club_id);
+CREATE INDEX idx_match_club_id ON match (club_id);
 
 -- Relational tables
 
