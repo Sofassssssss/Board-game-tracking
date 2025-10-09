@@ -1,0 +1,17 @@
+DROP TABLE IF EXISTS account_club;
+DROP TABLE IF EXISTS match_player;
+
+DROP TABLE IF EXISTS match;
+DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS player;
+DROP TABLE IF EXISTS player_ruleset;
+DROP TABLE IF EXISTS team_ruleset;
+
+DROP TABLE IF EXISTS game;
+DROP TABLE IF EXISTS club_role;
+DROP TABLE IF EXISTS club;
+DROP TABLE IF EXISTS role;
+
+DROP TYPE IF EXISTS match_outcome;
+DROP TYPE IF EXISTS game_score_policy;
+DROP TYPE IF EXISTS game_placement_policy;

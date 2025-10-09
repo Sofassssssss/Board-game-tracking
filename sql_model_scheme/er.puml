@@ -36,19 +36,19 @@ entity Match {
   * id: SERIAL [PK]
   --
   game_id: INT [FK -> Game.id]
-  group_id: INT [FK -> Group.id]
-  created_by_user_id: INT [FK -> User.id]
+  club_id: INT [FK -> Club.id]
+  created_by_account_id: INT [FK -> Account.id]
   date: DATE
 }
 
-entity Group {
+entity Club {
   * id: SERIAL [PK]
   --
   name: VARCHAR UNIQUE
   description: TEXT
 }
 
-entity User {
+entity Account {
   * id: SERIAL [PK]
   --
   role_id: INT [FK -> Role.id]
@@ -57,12 +57,12 @@ entity User {
   email: TEXT
 }
 
-entity UserGroup{
-    * user_group_id: SERIAL [PK]
+entity AccountClub{
+    * account_club_id: SERIAL [PK]
     --
-    user_id: INT [FK -> User.id]
-    group_id: INT [FK -> Group.id]
-    user_group_role_id: INT [FK -> GroupRole.id]
+    account_id: INT [FK -> Account.id]
+    club_id: INT [FK -> Club.id]
+    account_club_role_id: INT [FK -> ClubRole.id]
 }
 
 entity MatchPlayer{
@@ -78,7 +78,7 @@ entity MatchPlayer{
 entity Player {
   * id: SERIAL [PK]
   --
-  group_id: INT [FK -> Group.id]
+  club_id: INT [FK -> Club.id]
   name: TEXT
   surname: TEXT
 }
@@ -89,7 +89,7 @@ entity Role {
   name: VARCHAR UNIQUE
 }
 
-entity GroupRole {
+entity ClubRole {
   * id: SERIAL [PK]
   --
   name: VARCHAR UNIQUE
@@ -97,15 +97,15 @@ entity GroupRole {
 
 
 Match }o--|| Game
-Match }o--|| Group
-Match }o--|| User
+Match }o--|| Club
+Match }o--|| Account
 Match ||-o{ MatchPlayer
-Player }|---|| Group
+Player }|---|| Club
 Player ||---|{ MatchPlayer
-User }|--|{ Role
-User ||--o{ UserGroup
-Group ||--|{ UserGroup
-UserGroup }|--|| GroupRole
+Account }|--|{ Role
+Account ||--o{ AccountClub
+Club ||--|{ AccountClub
+AccountClub }|--|| ClubRole
 PlayerRuleset |o--|{ Game
 TeamRuleset |o--|{ Game
 
