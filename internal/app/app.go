@@ -5,7 +5,7 @@ import (
 
 	"github.com/Sofassssssss/Board-game-tracking/internal/config"
 	"github.com/Sofassssssss/Board-game-tracking/internal/http/router"
-	"github.com/Sofassssssss/Board-game-tracking/internal/http/validators"
+	"github.com/Sofassssssss/Board-game-tracking/internal/http/validation"
 	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
 	"github.com/Sofassssssss/Board-game-tracking/migrations"
 	"github.com/gin-gonic/gin"
@@ -30,7 +30,7 @@ func NewApp() *App {
 	r := gin.Default()
 	router.SetupRoutes(r)
 
-	validators.Init()
+	validation.Init()
 
 	return &App{Router: r}
 }
