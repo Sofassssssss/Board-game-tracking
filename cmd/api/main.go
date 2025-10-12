@@ -2,11 +2,11 @@ package main
 
 import (
 	"github.com/Sofassssssss/Board-game-tracking/internal/app"
-	"github.com/Sofassssssss/Board-game-tracking/internal/http/validators"
+	"github.com/Sofassssssss/Board-game-tracking/internal/http/validation"
 )
 
 func main() {
-	validators.Init()
+	validation.Init()
 	application := app.NewApp()
 	application.Run()
 }
