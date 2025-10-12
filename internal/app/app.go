@@ -1,11 +1,13 @@
 package app
 
 import (
+	"log"
+
 	"github.com/Sofassssssss/Board-game-tracking/internal/config"
 	"github.com/Sofassssssss/Board-game-tracking/internal/http/router"
+	"github.com/Sofassssssss/Board-game-tracking/internal/http/validation"
 	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
 	"github.com/gin-gonic/gin"
-	"log"
 )
 
 type App struct {
@@ -25,6 +27,8 @@ func NewApp() *App {
 	// init router
 	r := gin.Default()
 	router.SetupRoutes(r)
+
+	validation.Init()
 
 	return &App{Router: r}
 }

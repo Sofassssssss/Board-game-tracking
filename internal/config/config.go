@@ -1,8 +1,14 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
 	"log"
+	"time"
+
+	"github.com/joho/godotenv"
+)
+
+const (
+	TokenMaxAge = 30 * 24 * time.Hour // 30 days
 )
 
 func LoadEnvVariables() {
