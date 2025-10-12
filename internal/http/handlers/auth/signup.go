@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Sofassssssss/Board-game-tracking/internal/http/validators"
+	"github.com/Sofassssssss/Board-game-tracking/internal/http/validation"
 	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
 	"github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm/models"
 	"github.com/gin-gonic/gin"
@@ -38,8 +38,8 @@ func Signup(c *gin.Context) {
 			return
 		}
 	*/
-	if err := validators.Validate.Struct(body); err != nil {
-		errorMessages := validators.TranslateValidationErrs(err)
+	if err := validation.Validate.Struct(body); err != nil {
+		errorMessages := validation.TranslateValidationErrs(err)
 
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   "Validation failed",
