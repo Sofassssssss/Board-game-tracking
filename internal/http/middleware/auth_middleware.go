@@ -2,13 +2,14 @@ package middleware
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"time"
+
 	gormrepo "github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm"
 	"github.com/Sofassssssss/Board-game-tracking/internal/repo/gorm/models"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"net/http"
-	"os"
-	"time"
 )
 
 func RequireAuth(c *gin.Context) {
